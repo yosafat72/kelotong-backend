@@ -12,8 +12,12 @@ import com.yohesu.kelontong.domain.presentation.dtos.user.response.UserDTO
 class GetUserServiceImpl(private val userRepository: UserRepository) : GetUsersUseCase {
 
     override fun execute(page: Int): List<UserDTO> {
-        val users = userRepository.findAll(PageRequest.of(page, 10)).get().collect(Collectors.toList())
-        System.out.println(users)
+        val pageIndex = if (page < 1) 0 else page - 1
+
+        val users = userRepository
+            .findAll(PageRequest.of(pageIndex, 10))
+            .content
+
         return users.map { UserMapper.mapToDto(it) }
     }
 
