@@ -19,4 +19,8 @@ class UserRepositoryImpl (
 
     }
 
+    override fun save(user: User): User {
+        return userJpaRepository.save(user)
+    }
+
 }
