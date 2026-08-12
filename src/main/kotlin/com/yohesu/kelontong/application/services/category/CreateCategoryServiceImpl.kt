@@ -1,7 +1,7 @@
 package com.yohesu.kelontong.application.services.category
 
 import com.yohesu.kelontong.application.usecases.category.CreateCategoryUseCase
-import com.yohesu.kelontong.domain.exceptions.DuplicateCategoryException
+import com.yohesu.kelontong.domain.exceptions.DuplicateResourceException
 import com.yohesu.kelontong.domain.model.Category
 import com.yohesu.kelontong.domain.repository.CategoryRepository
 import com.yohesu.kelontong.presentation.dtos.category.request.CreateCategoryRequest
@@ -20,7 +20,7 @@ class CreateCategoryServiceImpl(
     ): CategoryDTO {
 
         if (categoryRepository.existsByName(request.name)) {
-            throw DuplicateCategoryException(
+            throw DuplicateResourceException(
                 "Category with name '${request.name}' already exists"
             )
         }

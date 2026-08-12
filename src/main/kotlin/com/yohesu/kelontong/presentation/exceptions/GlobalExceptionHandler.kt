@@ -1,6 +1,6 @@
 package com.yohesu.kelontong.presentation.exceptions
 
-import com.yohesu.kelontong.domain.exceptions.DuplicateCategoryException
+import com.yohesu.kelontong.domain.exceptions.DuplicateResourceException
 import com.yohesu.kelontong.domain.exceptions.EmailAlreadyExistsException
 import com.yohesu.kelontong.domain.exceptions.ResourceNotFoundException
 import com.yohesu.kelontong.domain.exceptions.UserNotFoundException
@@ -135,9 +135,9 @@ class GlobalExceptionHandler {
             )
     }
 
-    @ExceptionHandler(DuplicateCategoryException::class)
+    @ExceptionHandler(DuplicateResourceException::class)
     fun handleDuplicateCategory(
-        exception: DuplicateCategoryException
+        exception: DuplicateResourceException
     ): ResponseEntity<Map<String, Any?>> {
 
         return ResponseEntity
