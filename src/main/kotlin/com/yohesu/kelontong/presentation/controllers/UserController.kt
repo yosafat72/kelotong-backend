@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.GetMapping
 import com.yohesu.kelontong.application.usecases.user.GetUsersUseCase
+import com.yohesu.kelontong.application.usecases.user.UpdateUserPasswordUseCase
 import com.yohesu.kelontong.application.usecases.user.UpdateUserUseCase
 import com.yohesu.kelontong.domain.presentation.dtos.user.response.UserDTO
 import com.yohesu.kelontong.presentation.dtos.user.request.CreateUserRequest
+import com.yohesu.kelontong.presentation.dtos.user.request.UpdatePasswordRequest
 import com.yohesu.kelontong.presentation.dtos.user.request.UpdateUserRequest
 import org.springframework.web.bind.annotation.RequestParam
 import com.yohesu.kelontong.shared.utils.GenericResponse
@@ -24,7 +26,8 @@ import org.springframework.web.bind.annotation.ResponseStatus
 class UserController(
     private val getUsersUseCase: GetUsersUseCase,
     private val createUserUseCase: CreateUserUseCase,
-    private val updateUserUseCase: UpdateUserUseCase
+    private val updateUserUseCase: UpdateUserUseCase,
+    private val updateUserPasswordUseCase: UpdateUserPasswordUseCase
 ){
 
     @GetMapping("/get-users")
@@ -72,4 +75,19 @@ class UserController(
         )
     }
 
+    @PutMapping("/update-user/{id}/password")
+    @ResponseStatus(HttpStatus.OK)
+    fun updatePassword(
+        @PathVariable id: Long,
+        @Valid @RequestBody request: UpdatePasswordRequest
+    ): GenericResponse<Unit> {
+
+        updateUserPasswordUseCase.execute(id = id, request = request)
+
+        return GenericResponse(
+            status = true,
+            message = "Successfully updated user password",
+            data = Unit
+        )
+    }
 }
