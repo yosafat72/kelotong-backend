@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface UserRepository {
 
-    fun findById(userId: Long): User?
+    fun findActiveById(userId: Long): User?
     fun existsByUsername(username: String): Boolean
     fun existsByEmail(email: String): Boolean
     fun existsByUsernameAndIdNot(username: String, id: Long): Boolean

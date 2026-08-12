@@ -13,7 +13,7 @@ class UpdateUserPasswordServiceImpl(
 
     override fun execute(id: Long, request: UpdatePasswordRequest) {
 
-        val user = userRepository.findById(id) ?: throw UserNotFoundException("User with id $id not found")
+        val user = userRepository.findActiveById(id) ?: throw UserNotFoundException("User with id $id not found")
 
         user.password = request.password
 

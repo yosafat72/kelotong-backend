@@ -1,6 +1,7 @@
 package com.yohesu.kelontong.presentation.controllers
 
 import com.yohesu.kelontong.application.usecases.user.CreateUserUseCase
+import com.yohesu.kelontong.application.usecases.user.DeleteUserUseCase
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.GetMapping
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam
 import com.yohesu.kelontong.shared.utils.GenericResponse
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -27,7 +29,8 @@ class UserController(
     private val getUsersUseCase: GetUsersUseCase,
     private val createUserUseCase: CreateUserUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
-    private val updateUserPasswordUseCase: UpdateUserPasswordUseCase
+    private val updateUserPasswordUseCase: UpdateUserPasswordUseCase,
+    private val deleteUserUseCase: DeleteUserUseCase
 ){
 
     @GetMapping("/get-users")
@@ -87,6 +90,21 @@ class UserController(
         return GenericResponse(
             status = true,
             message = "Successfully updated user password",
+            data = Unit
+        )
+    }
+
+    @DeleteMapping("/delete-user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun deleteUser(
+        @PathVariable id: Long
+    ): GenericResponse<Unit> {
+
+        deleteUserUseCase.execute(id)
+
+        return GenericResponse(
+            status = true,
+            message = "Successfully deleted user",
             data = Unit
         )
     }

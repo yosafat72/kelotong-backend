@@ -6,12 +6,32 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Repository
 
 @Repository
-class UserRepositoryImpl (
+class UserRepositoryImpl(
     private val userJpaRepository: UserJpaRepository
 ) : UserRepository {
 
-    override fun findById(userId: Long): User? {
-        return userJpaRepository.findById(userId).orElse(null)
+    override fun findAll(
+        page: Int,
+        size: Int
+    ): List<User> {
+
+        val pageIndex = if (page < 1) {
+            0
+        } else {
+            page - 1
+        }
+
+        return userJpaRepository
+            .findAllByIsActiveTrue(
+                PageRequest.of(pageIndex, size)
+            )
+            .content
+    }
+
+    override fun findActiveById(id: Long): User? {
+        return userJpaRepository
+            .findByIdAndIsActiveTrue(id)
+            .orElse(null)
     }
 
     override fun existsByUsername(username: String): Boolean {
@@ -22,25 +42,23 @@ class UserRepositoryImpl (
         return userJpaRepository.existsByEmail(email)
     }
 
-    override fun existsByUsernameAndIdNot(username: String, id: Long): Boolean {
-        return userJpaRepository.existsByUsernameAndIdNot(username, id)
-    }
-
-    override fun existsByEmailAndIdNot(email: String, id: Long): Boolean {
-        return userJpaRepository.existsByEmailAndIdNot(email, id)
-    }
-
-    override fun findAll(page: Int, size: Int): List<User> {
-        val pageIndex = if (page < 1) 0 else page - 1
-
+    override fun existsByUsernameAndIdNot(
+        username: String,
+        id: Long
+    ): Boolean {
         return userJpaRepository
-            .findAll(PageRequest.of(pageIndex, size))
-            .content
+            .existsByUsernameAndIdNot(username, id)
+    }
 
+    override fun existsByEmailAndIdNot(
+        email: String,
+        id: Long
+    ): Boolean {
+        return userJpaRepository
+            .existsByEmailAndIdNot(email, id)
     }
 
     override fun save(user: User): User {
         return userJpaRepository.save(user)
     }
-
 }

@@ -22,7 +22,7 @@ class UpdateUserServiceImpl(
     ): UserDTO {
 
         // 1. Find user
-        val user = userRepository.findById(id)
+        val user = userRepository.findActiveById(id)
             ?: throw UserNotFoundException(
                 "User with id $id not found"
             )

@@ -37,7 +37,10 @@ class User(
     var createdAt: LocalDateTime? = null,
 
     @Column(name = "updated_at")
-    var updatedAt: LocalDateTime? = null
+    var updatedAt: LocalDateTime? = null,
+
+    @Column(name = "is_active", nullable = false)
+    var isActive: Boolean = true
 )
 
 enum class UserRole{
