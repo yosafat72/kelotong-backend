@@ -1,6 +1,8 @@
 package com.yohesu.kelontong.presentation.exceptions
 
+import com.yohesu.kelontong.domain.exceptions.DuplicateCategoryException
 import com.yohesu.kelontong.domain.exceptions.EmailAlreadyExistsException
+import com.yohesu.kelontong.domain.exceptions.ResourceNotFoundException
 import com.yohesu.kelontong.domain.exceptions.UserNotFoundException
 import com.yohesu.kelontong.domain.exceptions.UsernameAlreadyExistsException
 import org.springframework.dao.DataIntegrityViolationException
@@ -113,6 +115,38 @@ class GlobalExceptionHandler {
             .body(
                 ErrorResponse(
                     message = "Internal server error"
+                )
+            )
+    }
+
+    @ExceptionHandler(ResourceNotFoundException::class)
+    fun handleResourceNotFound(
+        exception: ResourceNotFoundException
+    ): ResponseEntity<Map<String, Any?>> {
+
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(
+                mapOf(
+                    "status" to false,
+                    "message" to (exception.message ?: "Resource not found"),
+                    "data" to null
+                )
+            )
+    }
+
+    @ExceptionHandler(DuplicateCategoryException::class)
+    fun handleDuplicateCategory(
+        exception: DuplicateCategoryException
+    ): ResponseEntity<Map<String, Any?>> {
+
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .body(
+                mapOf(
+                    "status" to false,
+                    "message" to (exception.message ?: "Resource already exists"),
+                    "data" to null
                 )
             )
     }
