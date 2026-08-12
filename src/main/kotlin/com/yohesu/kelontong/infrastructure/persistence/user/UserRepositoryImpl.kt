@@ -22,6 +22,14 @@ class UserRepositoryImpl (
         return userJpaRepository.existsByEmail(email)
     }
 
+    override fun existsByUsernameAndIdNot(username: String, id: Long): Boolean {
+        return userJpaRepository.existsByUsernameAndIdNot(username, id)
+    }
+
+    override fun existsByEmailAndIdNot(email: String, id: Long): Boolean {
+        return userJpaRepository.existsByEmailAndIdNot(email, id)
+    }
+
     override fun findAll(page: Int, size: Int): List<User> {
         val pageIndex = if (page < 1) 0 else page - 1
 
