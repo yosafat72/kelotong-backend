@@ -1,19 +1,24 @@
 package com.yohesu.kelontong.application.services.user
 
-import com.yohesu.kelontong.application.usecases.user.GetUsersUseCase
-import com.yohesu.kelontong.domain.repository.UserRepository
-import org.springframework.stereotype.Service
-import org.springframework.data.domain.PageRequest
-import java.util.stream.Collectors
-import com.yohesu.kelontong.presentation.mappers.UserMapper
+import com.yohesu.kelontong.application.usecases.user.GetUserUseCase
+import com.yohesu.kelontong.domain.exceptions.UserNotFoundException
 import com.yohesu.kelontong.domain.presentation.dtos.user.response.UserDTO
+import com.yohesu.kelontong.domain.repository.UserRepository
+import com.yohesu.kelontong.presentation.mappers.UserMapper
+import org.springframework.stereotype.Service
 
 @Service
-class GetUserServiceImpl(private val userRepository: UserRepository) : GetUsersUseCase {
+class GetUserServiceImpl(
+    private val userRepository: UserRepository
+) : GetUserUseCase {
 
-    override fun execute(page: Int): List<UserDTO> {
-        val users = userRepository.findAll(page, size = 10)
-        return users.map { UserMapper.mapToDto(it) }
+    override fun execute(id: Long): UserDTO {
+
+        val user = userRepository.findActiveById(id)
+            ?: throw UserNotFoundException(
+                "User with id $id not found"
+            )
+
+        return UserMapper.mapToDto(user)
     }
-
 }

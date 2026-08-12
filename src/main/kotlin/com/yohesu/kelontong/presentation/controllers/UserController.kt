@@ -2,6 +2,7 @@ package com.yohesu.kelontong.presentation.controllers
 
 import com.yohesu.kelontong.application.usecases.user.CreateUserUseCase
 import com.yohesu.kelontong.application.usecases.user.DeleteUserUseCase
+import com.yohesu.kelontong.application.usecases.user.GetUserUseCase
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.GetMapping
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 @RequestMapping("/user")
 class UserController(
     private val getUsersUseCase: GetUsersUseCase,
+    private val getUserUseCase: GetUserUseCase,
     private val createUserUseCase: CreateUserUseCase,
     private val updateUserUseCase: UpdateUserUseCase,
     private val updateUserPasswordUseCase: UpdateUserPasswordUseCase,
@@ -43,6 +45,21 @@ class UserController(
         message = "Successfully retrieved users data",
         data = users
        )
+    }
+
+    @GetMapping("/get-user/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    fun getUser(
+        @PathVariable id: Long
+    ): GenericResponse<UserDTO> {
+
+        val user = getUserUseCase.execute(id)
+
+        return GenericResponse(
+            status = true,
+            message = "Successfully retrieved user data",
+            data = user
+        )
     }
 
     @PostMapping("/create-user")
