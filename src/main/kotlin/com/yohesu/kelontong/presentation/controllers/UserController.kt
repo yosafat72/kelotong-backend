@@ -9,8 +9,11 @@ import com.yohesu.kelontong.domain.presentation.dtos.user.response.UserDTO
 import com.yohesu.kelontong.presentation.dtos.user.request.CreateUserRequest
 import org.springframework.web.bind.annotation.RequestParam
 import com.yohesu.kelontong.shared.utils.GenericResponse
+import jakarta.validation.Valid
+import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.ResponseStatus
 
 @RestController
 @RequestMapping("/user")
@@ -32,8 +35,9 @@ class UserController(
     }
 
     @PostMapping("/create-user")
+    @ResponseStatus(HttpStatus.CREATED)
     fun createUser(
-        @RequestBody request: CreateUserRequest
+        @Valid @RequestBody request: CreateUserRequest
     ): GenericResponse<UserDTO> {
         val user = createUserUseCase.execute(request)
 
