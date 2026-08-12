@@ -9,7 +9,7 @@ object UserMapper {
 
     fun mapToDto(user: User): UserDTO {
         return UserDTO(
-            id = user.id,
+            id = user.id ?: 0L,
             name = user.name,
             username = user.username,
             email = user.email,

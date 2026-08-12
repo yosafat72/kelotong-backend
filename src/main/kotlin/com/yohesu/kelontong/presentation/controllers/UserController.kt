@@ -1,4 +1,4 @@
-package com.yohesu.kelontong.domain.presentation.controllers
+package com.yohesu.kelontong.presentation.controllers
 
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
